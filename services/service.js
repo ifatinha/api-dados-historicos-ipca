@@ -19,7 +19,7 @@ function buscarIPCAPorAno(ano) {
 }
 
 function calcularValorPorHistorico(valor, mesInicial, anoInicial, mesFinal, anoFinal) {
-    //fazer com slice
+    //fazer com slice e findIndex
     //resultado = valor * ((1 + (ipca1/100)) * (1 + (ipca2/100)) * ... * (1 + (ipcaN/100)))
 }
 
