@@ -42,8 +42,12 @@ app.get("/calculo", (req, res) => {
         res.status(404).json({ "Erro": "Parametros inválidos, todos nos paramentros devem ser números." });
     } else {
         if (anoInicial <= anoFinal) {
-            const resultado = calcularValorPorHistorico(valor, mesInicial, anoInicial, mesFinal, anoFinal);
-            res.json({ "parametros": resultado });
+            if ((mesInicial > 0 && mesInicial <= 12) && mesFinal > 0 && mesFinal <= 12) {
+                const resultado = calcularValorPorHistorico(valor, mesInicial, anoInicial, mesFinal, anoFinal);
+                res.json({ "parametros": resultado });
+            } else {
+                res.status(404).json({ "Erro": "Os meses tem que está no intervalo de 1 a 12" });
+            }
         } else {
             res.status(404).json({ "Erro": "Falha na requisição. O ano final não pode ser menor que o ano inicial." });
         }
