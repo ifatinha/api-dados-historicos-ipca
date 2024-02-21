@@ -6,27 +6,28 @@ const app = express();
 app.get("/historico", (req, res) => {
     let ano = (parseInt(req.query.ano));
 
-    if (isNaN(ano)) {
-        res.status(404).json({ "Erro": "Requisição inválida!" });
+    let historicoAno = ano ? buscarIPCAPorAno(ano) : listarHistoricoIPCA();
+
+    if (historicoAno.length > 0) {
+        res.json(historicoAno);
     } else {
-        let historicoAno = ano ? buscarIPCAPorAno(ano) : listarHistoricoIPCA();
-        if (historicoAno.length > 0) {
-            res.json(historicoAno);
-        } else {
-            res.status(404).json({ "Error": "Não existe histórico para o ano informado." });
-        }
+        res.status(404).json({ "Error": "Não existe histórico para o ano informado." });
     }
 });
 
 app.get("/historico/:id", (req, res) => {
     let id = (parseInt(req.params.id));
 
-    let historico = buscarIPCAPorId(id);
-
-    if (historico) {
-        res.json(historico);
+    if (isNaN(id)) {
+        res.status(404).json({ "Erro": "O valor passado é inválido." });
     } else {
-        res.status(404).json({ "Error": "Não há historico para o ID informado." });
+        let historico = buscarIPCAPorId(id);
+
+        if (historico) {
+            res.json(historico);
+        } else {
+            res.status(404).json({ "Error": "Não há historico para o ID informado." });
+        }
     }
 });
 

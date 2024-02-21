@@ -18,9 +18,26 @@ function buscarIPCAPorAno(ano) {
     return historicoAno;
 }
 
+function buscarHistoricoIndex(mes, ano) {
+    return historicoIPCA.findIndex((historico) => {
+        return (historico.ano === ano && historico.mes === mes);
+    })
+}
+
+function buscarHistoricoIntervalo(indexAnoInicial, indexAnoFinal) {
+    return historicoIPCA.slice(indexAnoInicial, indexAnoFinal + 1);
+}
+
 function calcularValorPorHistorico(valor, mesInicial, anoInicial, mesFinal, anoFinal) {
-    //fazer com slice e findIndex
-    //resultado = valor * ((1 + (ipca1/100)) * (1 + (ipca2/100)) * ... * (1 + (ipcaN/100)))
+    let indexAnoInicial = buscarHistoricoIndex(mesInicial, anoInicial);
+    let indexAnoFinal = buscarHistoricoIndex(mesFinal, anoFinal);
+    let intervalo = buscarHistoricoIntervalo(indexAnoInicial, indexAnoFinal);
+
+    let resultado = intervalo.reduce((total, historico) => {
+        return total * (1 + (historico.ipca / 100));
+    }, valor);
+
+    return (resultado.toFixed(2));
 }
 
 export { listarHistoricoIPCA, buscarIPCAPorId, buscarIPCAPorAno, calcularValorPorHistorico };
